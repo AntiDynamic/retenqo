@@ -10,6 +10,40 @@ Retenqo is a local-first Android AI memory and commitment assistant. It turns au
 
 > **Latest stable:** [Retenqo v0.1.4 for Android 13+ (ARM64)](https://github.com/priyanshuchawda/retenqo/releases/latest). It includes the SQLCipher pooled-connection fix, verified against the pinned publisher certificate and installed as an in-place upgrade on Android 16.
 
+---
+
+## Problem Statement — Open Innovation
+
+> Build a privacy-first AI assistant that helps people remember important information, recover relevant context and follow through on commitments scattered across their digital lives. The solution should transform user-authorized notifications, messages and selected media into structured personal memories, source-linked answers and actionable follow-ups, using resource-aware on-device intelligence while protecting personal information and preserving user control.
+
+## Problem & Solution
+
+Important requests, deadlines and useful information are scattered across phone notifications, conversations, screenshots and documents. Traditional search requires users to remember where information originated; conventional task managers require manual entry and organization. Cloud-based assistants can introduce additional privacy and connectivity concerns.
+
+**Retenqo** addresses this problem through a unified, local-first Android workflow: **capture → understand → remember → retrieve → follow through**.
+
+| Problem requirement | Retenqo feature | Practical value and implementation |
+| --- | --- | --- |
+| Capture fragmented digital information | **Contextual capture** | Seven opt-in notification groups, explicit screen capture, sharing and selected-media OCR turn authorized context into structured records. [Architecture](docs/ARCHITECTURE.md) |
+| Recover forgotten information | **Intelligent memory and recall** | Local memory ranking and source-linked answers help users recover relevant context. [Memory retrieval](android/mneme/app/src/main/java/com/mneme/app/data/NoteRepository.kt), [AI implementation](docs/AI_IMPLEMENTATION.md) |
+| Recognize deadlines and responsibilities | **Commitment extraction** | Rules-first extraction identifies actionable cues and produces reviewable commitments. [Extraction logic](android/mneme/app/src/main/java/com/mneme/app/ai/RulesExtract.kt) |
+| Help users follow through | **Reminders and completion review** | Users can confirm, edit, snooze and complete commitments; contextual completion suggestions support informed decisions. [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md) |
+| Protect personal information | **Private local processing and encrypted storage** | Optional local GGUF inference avoids cloud AI processing; SQLCipher, Android Keystore and authenticated backup exports protect stored memory and new backups. [Security review](docs/SECURITY_REVIEW.md) |
+| Operate within mobile resource constraints | **Efficient on-device intelligence** | Deterministic processing, quantized models and bounded workloads reduce unnecessary inference. [Performance](docs/PERFORMANCE.md) |
+| Keep the user in control | **Permission and review boundaries** | Configurable capture consent and human-reviewed commitment updates preserve user decision authority. [Threat model](docs/THREAT_MODEL.md) |
+
+### Expected outcomes
+
+- Recover useful information without manually searching across multiple sources.
+- Turn important requests and deadlines into reviewable commitments.
+- Retrieve relevant memory with source context and manage follow-through.
+- Preserve privacy through local AI processing, protected persistence and explicit permissions.
+
+These are intended product outcomes, not measured user-impact statistics. The problem statement is defined by Retenqo for Open Innovation. [Acceptance criteria](docs/PRODUCT_REQUIREMENTS.md) · [Evaluation alignment](docs/EVALUATION_GUIDE.md).
+
+---
+
+
 ## Engineering highlights
 
 | Capability | Engineering achievement |
@@ -34,26 +68,6 @@ Retenqo is a local-first Android AI memory and commitment assistant. It turns au
 | Production Lighthouse, one mobile-simulated run | Performance 92, accessibility 100, best practices 100, SEO 100; LCP 1.263 s, CLS 0 |
 
 These are recorded results from the 25 November verification report and published release, scoped to their tested revisions. Website coverage is not Android coverage. See [complete results, coverage and provenance](docs/TESTING.md).
-
-## Open Innovation — Problem statement
-
-Everyday digital context is fragmented across notifications, messages, images and documents. People lose time reconstructing important information, miss commitments buried in conversations and struggle to follow through. Existing search and task tools often require manual organization, while cloud-based AI may expose sensitive personal context or require connectivity.
-
-**Open Innovation challenge:** Build a privacy-first, mobile personal-intelligence system that turns user-authorized context into structured, retrievable memories and reviewable commitments; supports evidence-linked recall and timely follow-through; and uses resource-aware on-device processing while preserving user consent and decision authority.
-
-### Retenqo's solution
-
-Retenqo connects context capture, local AI, protected memory, evidence-aware recall and commitment review into a single Android workflow. Supported platform permissions and human approval keep capture and consequential updates under user control.
-
-| Problem | Implemented solution | Engineering evidence |
-| --- | --- | --- |
-| Fragmented context | Seven configurable notification groups, selected media, sharing and OCR | [Architecture](docs/ARCHITECTURE.md) |
-| Forgotten information | Local structured records, lexical ranking and evidence-linked Ask | [AI implementation](docs/AI_IMPLEMENTATION.md) |
-| Missed commitments | Reviewable deadlines, reminders and completion evidence | [Traceability](docs/REQUIREMENTS_TRACEABILITY.md) |
-| Sensitive personal data | Local inference, SQLCipher Room and authenticated backup exports | [Security review](docs/SECURITY_REVIEW.md) |
-| Mobile resource constraints | Rules-first extraction, quantized inference and bounded workloads | [Performance](docs/PERFORMANCE.md) |
-
-This is the project's self-defined Open Innovation problem, not a quoted external challenge. See [product requirements](docs/PRODUCT_REQUIREMENTS.md) and [evaluation alignment](docs/EVALUATION_GUIDE.md).
 
 ## How it works
 
