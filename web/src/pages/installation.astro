@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PRODUCT_INFO } from '../config/product';
+
+const steps = [
+  {
+    title: '1. Download the official APK',
+    detail:
+      'Visit the Download page and get the latest verified APK directly from GitHub Releases.',
+  },
+  {
+    title: '2. Verify the checksum (recommended)',
+    detail:
+      'Compare the SHA-256 hash of your downloaded file against the published checksum on the Download page.',
+  },
+  {
+    title: '3. Open the downloaded APK',
+    detail:
+      'Tap the APK file in your browser or file manager. Android will prompt you to allow installation from that source.',
+  },
+  {
+    title: '4. Allow installation temporarily',
+    detail:
+      'Grant permission only to your trusted browser or file manager. Do not disable Google Play Protect.',
+  },
+  {
+    title: '5. Install and revoke source permission',
+    detail:
+      'Complete installation, then revoke the "Install unknown apps" permission if you no longer need it.',
+  },
+  {
+    title: '6. Configure privacy & local AI',
+    detail: `Open Retenqo, enable only the capture sources you want, and optionally download the ${PRODUCT_INFO.model.name} model. The model download (${PRODUCT_INFO.model.downloadSizeLabel}) is separate from the APK and also needs device storage. Runtime memory varies by device and is not stated as a guaranteed minimum.`,
+  },
+];
+---
+
+<BaseLayout
+  title="Installation Guide"
+  description="Step-by-step instructions to safely download, verify, and install the Retenqo Android APK."
+>
+  <section class="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+    <p
+      class="text-xs font-semibold tracking-widest text-[var(--accent-primary)] uppercase"
+    >
+      Onboarding
+    </p>
+    <h1
+      class="mt-3 text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl"
+    >
+      Safe Installation Guide
+    </h1>
+    <p class="mt-4 text-base text-[var(--text-secondary)]">
+      Follow these steps to install Retenqo safely on Android. Permission
+      screens may vary slightly by manufacturer.
+    </p>
+
+    <ol class="mt-10 space-y-4">
+      {
+        steps.map((step) => (
+          <li class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)] p-6">
+            <h2 class="text-base font-semibold text-[var(--text-primary)]">
+              {step.title}
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">
+              {step.detail}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+    <aside
+      class="mt-8 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)] p-5 text-sm text-[var(--text-secondary)]"
+    >
+      <h2 class="font-semibold text-[var(--text-primary)]">
+        APK and AI model are separate
+      </h2>
+      <p class="mt-2">
+        The APK is the app installer. The optional {PRODUCT_INFO.model.name} model
+        is a separate {PRODUCT_INFO.model.downloadSizeLabel} download from inside
+        the app. Allow additional free space for the downloaded model; runtime memory
+        depends on the device and workload. A historical single model run measured
+        about 831 MB process PSS on a Galaxy M32; this is not a minimum requirement
+        or repeatable benchmark.
+      </p>
+    </aside>
+  </section>
+</BaseLayout>

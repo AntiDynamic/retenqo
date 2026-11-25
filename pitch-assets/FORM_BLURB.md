@@ -1,0 +1,5 @@
+# Product summary
+
+Retenqo turns authorized Android context into source-linked memories and reviewable commitments. Seven configurable notification groups, explicit screen capture, selected-file intake and on-device OCR feed deterministic extraction and optional quantized local GGUF inference. Lexical retrieval and citation checks support memory recall, while reminders, decision history and human-approved completion suggestions support follow-through. SQLCipher with Android Keystore-backed key protection and authenticated backup exports protect persisted personal context. The official static website verifies published APK identity, digest and pinned signer. Signed v0.1.4 was upgraded and launched on Android 16; the source verification record reports 114 JVM tests and 6/6 instrumentation tests passed.
+
+[Repository](https://github.com/priyanshuchawda/retenqo) · [Release](https://github.com/priyanshuchawda/retenqo/releases/tag/v0.1.4) · [Website](https://retenqo.pages.dev) · [Engineering evidence](../docs/TESTING.md)

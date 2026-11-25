@@ -1,0 +1,395 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../config/site';
+import { PRODUCT_INFO } from '../config/product';
+import Button from '../components/ui/Button.astro';
+import CopyButton from '../components/ui/CopyButton.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import releaseData from '../data/release.generated.json';
+import { formatBytes, parseReleaseState } from '../lib/releases/validation';
+
+const state = parseReleaseState(releaseData);
+const apkFilename =
+  state.status === 'available'
+    ? (new URL(state.release.apkUrl).pathname.split('/').at(-1) ??
+      'Retenqo.apk')
+    : 'Retenqo.apk';
+---
+
+<BaseLayout
+  title="Download Retenqo for Android"
+  description="Official Android APK distribution for Retenqo with SHA-256 checksum. Direct from GitHub Releases."
+>
+  <section class="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+    <SectionHeading
+      eyebrow="Official Application Distribution"
+      heading="Retenqo for Android"
+      headingLevel={1}
+      subheading="All APK builds are distributed directly from official GitHub Releases. No intermediate proxy."
+    />
+
+    <div
+      class="mt-10 rounded-3xl border p-6 sm:p-8"
+      style="border-color: var(--border-subtle); background: var(--bg-secondary);"
+    >
+      {
+        state.status === 'pending' ? (
+          <div>
+            <span
+              class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold"
+              style="border-color: var(--border-subtle); background: var(--bg-tertiary); color: var(--text-muted);"
+            >
+              ⏳ Awaiting first release
+            </span>
+
+            <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+              {[
+                ['Version', 'Pending release'],
+                ['APK size', 'Pending release'],
+                ['SHA-256 checksum', 'Available after publication'],
+                ['Signing certificate', 'Available after verification'],
+                [
+                  'Min. Android',
+                  `Android ${PRODUCT_INFO.android.minimumApi} (API ${PRODUCT_INFO.android.minimumApi})`,
+                ],
+                ['Architecture', PRODUCT_INFO.android.architectures.join(', ')],
+              ].map(([dt, dd]) => (
+                <div
+                  class="rounded-2xl border p-4"
+                  style="border-color: var(--border-subtle); background: var(--bg-primary);"
+                >
+                  <dt
+                    class="text-xs font-medium"
+                    style="color: var(--text-muted);"
+                  >
+                    {dt}
+                  </dt>
+                  <dd
+                    class="mt-1 text-sm font-semibold"
+                    style="color: var(--text-primary);"
+                  >
+                    {dd}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
+            <div class="mt-8 flex flex-wrap gap-4">
+              <button
+                type="button"
+                disabled
+                class="inline-flex min-h-[48px] cursor-not-allowed items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
+                style="background: var(--bg-tertiary); color: var(--text-muted);"
+              >
+                Download APK — Coming soon
+              </button>
+              <Button
+                href={SITE_CONFIG.appReleasesUrl}
+                variant="secondary"
+                size="lg"
+              >
+                View official GitHub Releases ↗
+              </Button>
+            </div>
+            <p class="mt-4 text-xs" style="color: var(--text-muted);">
+              The download becomes available automatically once a valid, signed
+              public release is published.
+            </p>
+          </div>
+        ) : (
+          <div>
+            <span
+              class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold"
+              style="border-color: var(--accent-primary); background: var(--accent-soft); color: var(--accent-primary);"
+            >
+              ✓{' '}
+              {state.release.channel === 'stable'
+                ? 'Stable release'
+                : 'Engineering preview'}{' '}
+              · {state.release.version}
+            </span>
+
+            <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div
+                class="rounded-2xl border p-4"
+                style="border-color: var(--border-subtle); background: var(--bg-primary);"
+              >
+                <dt
+                  class="text-xs font-medium"
+                  style="color: var(--text-muted);"
+                >
+                  Version
+                </dt>
+                <dd
+                  class="mt-1 text-sm font-semibold"
+                  style="color: var(--text-primary);"
+                >
+                  {state.release.version} (
+                  {state.release.channel === 'stable' ? 'Stable' : 'Preview'})
+                </dd>
+              </div>
+              <div
+                class="rounded-2xl border p-4"
+                style="border-color: var(--border-subtle); background: var(--bg-primary);"
+              >
+                <dt
+                  class="text-xs font-medium"
+                  style="color: var(--text-muted);"
+                >
+                  APK size
+                </dt>
+                <dd
+                  class="mt-1 text-sm font-semibold"
+                  style="color: var(--text-primary);"
+                >
+                  {formatBytes(state.release.apkSizeBytes)}
+                </dd>
+              </div>
+              <div
+                class="rounded-2xl border p-4 sm:col-span-2"
+                style="border-color: var(--border-subtle); background: var(--bg-primary);"
+              >
+                <dt
+                  class="text-xs font-medium"
+                  style="color: var(--text-muted);"
+                >
+                  SHA-256 checksum
+                </dt>
+                <dd
+                  class="mt-1 break-all font-mono text-xs"
+                  style="color: var(--text-primary);"
+                >
+                  {state.release.sha256}
+                </dd>
+                <dd class="mt-3">
+                  <CopyButton
+                    value={state.release.sha256}
+                    label="APK SHA-256 checksum"
+                  />
+                </dd>
+              </div>
+              {state.release.signingCertificateSha256 && (
+                <div
+                  class="rounded-2xl border p-4 sm:col-span-2"
+                  style="border-color: var(--border-subtle); background: var(--bg-primary);"
+                >
+                  <dt
+                    class="text-xs font-medium"
+                    style="color: var(--text-muted);"
+                  >
+                    Signing certificate SHA-256
+                  </dt>
+                  <dd
+                    class="mt-1 break-all font-mono text-xs"
+                    style="color: var(--text-primary);"
+                  >
+                    {state.release.signingCertificateSha256}
+                  </dd>
+                  <dd class="mt-3">
+                    <CopyButton
+                      value={state.release.signingCertificateSha256}
+                      label="signing certificate fingerprint"
+                    />
+                  </dd>
+                </div>
+              )}
+              <div
+                class="rounded-2xl border p-4"
+                style="border-color: var(--border-subtle); background: var(--bg-primary);"
+              >
+                <dt
+                  class="text-xs font-medium"
+                  style="color: var(--text-muted);"
+                >
+                  Published &amp; Synced
+                </dt>
+                <dd
+                  class="mt-1 text-sm font-semibold"
+                  style="color: var(--text-primary);"
+                >
+                  {state.release.publishedAt.slice(0, 10)} (synced{' '}
+                  {state.syncedAt.slice(0, 10)})
+                </dd>
+              </div>
+              <div
+                class="rounded-2xl border p-4"
+                style="border-color: var(--border-subtle); background: var(--bg-primary);"
+              >
+                <dt
+                  class="text-xs font-medium"
+                  style="color: var(--text-muted);"
+                >
+                  On-device AI model
+                </dt>
+                <dd
+                  class="mt-1 text-sm font-semibold"
+                  style="color: var(--text-primary);"
+                >
+                  {PRODUCT_INFO.model.name} (
+                  {PRODUCT_INFO.model.downloadSizeLabel} download in app)
+                </dd>
+              </div>
+              <div
+                class="rounded-2xl border p-4"
+                style="border-color: var(--border-subtle); background: var(--bg-primary);"
+              >
+                <dt
+                  class="text-xs font-medium"
+                  style="color: var(--text-muted);"
+                >
+                  Min. Android
+                </dt>
+                <dd
+                  class="mt-1 text-sm font-semibold"
+                  style="color: var(--text-primary);"
+                >
+                  {PRODUCT_INFO.android.minimumOsLabel} (API{' '}
+                  {state.release.minimumAndroidApi})
+                </dd>
+              </div>
+              <div
+                class="rounded-2xl border p-4"
+                style="border-color: var(--border-subtle); background: var(--bg-primary);"
+              >
+                <dt
+                  class="text-xs font-medium"
+                  style="color: var(--text-muted);"
+                >
+                  Architecture
+                </dt>
+                <dd
+                  class="mt-1 text-sm font-semibold"
+                  style="color: var(--text-primary);"
+                >
+                  {state.release.architectures.join(', ')}
+                </dd>
+              </div>
+            </dl>
+
+            <div class="mt-8 flex flex-wrap gap-4">
+              <Button href={state.release.apkUrl} variant="primary" size="lg">
+                Download {state.release.version} APK (
+                {formatBytes(state.release.apkSizeBytes)})
+              </Button>
+              <Button
+                href={state.release.releaseUrl}
+                variant="secondary"
+                size="lg"
+              >
+                Release Notes ↗
+              </Button>
+            </div>
+          </div>
+        )
+      }
+    </div>
+
+    {
+      state.status === 'available' && (
+        <p class="mt-3 text-sm" style="color: var(--text-secondary);">
+          Requires Android {state.release.minimumAndroidApi}+ ·{' '}
+          {state.release.architectures.join(', ')}. The optional AI model is a
+          separate {PRODUCT_INFO.model.downloadSizeLabel} download.
+        </p>
+      )
+    }
+
+    <!-- Verification section -->
+    <section
+      class="mt-10 rounded-3xl border p-6"
+      style="border-color: var(--border-subtle); background: var(--bg-secondary);"
+    >
+      <h2 class="text-lg font-semibold" style="color: var(--text-primary);">
+        Verify your download
+      </h2>
+      <p class="mt-2 text-sm" style="color: var(--text-secondary);">
+        Downloaded filename: <code>{apkFilename}</code>. Compare its SHA-256
+        with the published digest above, then compare the signing certificate
+        fingerprint with the release details.
+      </p>
+      <div class="mt-5 space-y-4 text-xs">
+        {
+          [
+            {
+              label: 'Windows PowerShell',
+              code: `Get-FileHash .\\${apkFilename} -Algorithm SHA256`,
+            },
+            { label: 'Linux / macOS', code: `sha256sum ${apkFilename}` },
+            {
+              label: 'Android SDK (apksigner)',
+              code: `apksigner verify --verbose --print-certs ${apkFilename}`,
+            },
+          ].map(({ label, code }) => (
+            <div>
+              <p class="mb-1 font-semibold" style="color: var(--text-primary);">
+                {label}
+              </p>
+              <pre
+                class="overflow-x-auto rounded-xl border p-3 font-mono leading-relaxed"
+                style="border-color: var(--border-subtle); background: var(--bg-primary); color: var(--text-secondary);"
+                tabindex="0"
+                aria-label={`${label} verification command`}
+              >
+                <code>{code}</code>
+              </pre>
+              <div class="mt-2">
+                <CopyButton
+                  value={code}
+                  label={`${label} verification command`}
+                />
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Installation link -->
+    <p class="mt-6 text-sm text-center" style="color: var(--text-muted);">
+      First time installing an APK?
+      <a
+        href="/installation"
+        class="font-semibold underline underline-offset-2 hover:opacity-80"
+        style="color: var(--accent-primary);"
+      >
+        Read the safe installation guide →
+      </a>
+    </p>
+  </section>
+
+  <section
+    class="mx-auto max-w-4xl px-4 pb-16 sm:px-6"
+    aria-labelledby="engineering-evidence"
+  >
+    <div
+      class="rounded-3xl border p-6 sm:p-8"
+      style="border-color: var(--border-subtle); background: var(--bg-secondary);"
+    >
+      <h2
+        id="engineering-evidence"
+        class="text-2xl font-bold"
+        style="color: var(--text-primary);"
+      >
+        Engineering evidence
+      </h2>
+      <p class="mt-2 text-sm" style="color: var(--text-secondary);">
+        Latest local verification for this release candidate:
+      </p>
+      <ul
+        class="mt-4 grid gap-3 text-sm sm:grid-cols-2"
+        style="color: var(--text-primary);"
+      >
+        <li>114 JVM tests passed; 0 failures.</li>
+        <li>5 Android instrumentation tests passed on Android 16.</li>
+        <li>Android Lint: 0 errors, 34 warnings, 1 hint.</li>
+        <li>Debug and signed release APK builds succeeded.</li>
+      </ul>
+      <p class="mt-4 text-xs" style="color: var(--text-muted);">
+        These checks cover the current source and release candidate; they are
+        not a claim of exhaustive security or performance testing.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline src="/scripts/copy-to-clipboard.js"></script>

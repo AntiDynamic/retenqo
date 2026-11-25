@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import MemoryWorkflow from '../components/home/MemoryWorkflow.astro';
+import FeatureGrid from '../components/home/FeatureGrid.astro';
+import DownloadCTA from '../components/home/DownloadCTA.astro';
+import { SITE_CONFIG } from '../config/site';
+import { PRODUCT_INFO } from '../config/product';
+---
+
+<BaseLayout title={SITE_CONFIG.name}>
+  <Fragment slot="head">
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: 'Retenqo',
+        operatingSystem: `${PRODUCT_INFO.android.minimumOsLabel}+`,
+        applicationCategory: 'ProductivityApplication',
+        description: SITE_CONFIG.description,
+        url: SITE_CONFIG.url,
+        downloadUrl: SITE_CONFIG.appReleasesUrl,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Retenqo',
+          url: SITE_CONFIG.url,
+        },
+      })}
+    />
+  </Fragment>
+
+  <Hero />
+  <MemoryWorkflow />
+  <FeatureGrid />
+  <DownloadCTA />
+</BaseLayout>

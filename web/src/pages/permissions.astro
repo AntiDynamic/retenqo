@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Permission {
+  name: string;
+  purpose: string;
+  control: string;
+}
+
+const permissions: readonly Permission[] = [
+  {
+    name: 'Notification Listener Service (Optional)',
+    purpose:
+      'Reads notifications from apps you explicitly allow so Retenqo can surface commitments and memories.',
+    control:
+      'Disabled by default. You choose which app groups are included and can pause capture anytime in settings.',
+  },
+  {
+    name: 'Accessibility Service (Optional)',
+    purpose:
+      'Reads eligible visible screen text from external applications to maintain a bounded, short-lived snapshot for explicitly opted-in Ask queries.',
+    control:
+      'Disabled by default. You grant it in Android Accessibility Settings and can revoke it at any time. Never included in Ask unless you explicitly select it.',
+  },
+  {
+    name: 'Screen Capture via MediaProjection (Optional)',
+    purpose:
+      'Powers the screenshot-understanding feature. When you explicitly initiate a capture, Android shows a one-time system consent dialog before any screen content is read.',
+    control:
+      'Requires explicit user consent on every session. Never runs in the background silently.',
+  },
+  {
+    name: 'Microphone (Optional)',
+    purpose:
+      'Used only when you tap the voice-note button to record a voice-to-memory. Transcription happens on-device.',
+    control:
+      'Never records in the background. Standard Android microphone permission; can be revoked in app settings.',
+  },
+  {
+    name: 'Storage / Media (Optional)',
+    purpose:
+      'Allows importing screenshots from your gallery for on-device OCR, and exporting or restoring encrypted backup files.',
+    control: 'Scoped to user-selected files only. No broad storage access.',
+  },
+  {
+    name: 'Internet Access',
+    purpose:
+      'Used when you explicitly download the on-device AI model. The app does not currently check for app updates. Personal memories are not uploaded by that download flow.',
+    control:
+      'Network access does not run automatically. No background telemetry or tracking.',
+  },
+  {
+    name: 'Post Notifications',
+    purpose:
+      'Delivers local commitment reminders created from your tracked memories. All notifications are generated on-device.',
+    control: 'Can be disabled in Android system notification settings.',
+  },
+  {
+    name: 'Schedule Exact Alarms',
+    purpose:
+      'Ensures reminder notifications fire at the exact time you scheduled them, even when the device is in a low-power state.',
+    control: 'Only used for user-created reminders. No background tracking.',
+  },
+];
+---
+
+<BaseLayout
+  title="Android Permissions"
+  description="Transparent explanation of why Retenqo requests each Android permission and how you control it."
+>
+  <section class="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+    <p
+      class="text-xs font-semibold tracking-widest text-[var(--accent-primary)] uppercase"
+    >
+      Transparency
+    </p>
+    <h1
+      class="mt-3 text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl"
+    >
+      Android Permissions
+    </h1>
+    <p class="mt-4 text-base text-[var(--text-secondary)]">
+      Every permission in Retenqo is optional or scoped to a specific
+      user-initiated feature.
+    </p>
+
+    <div class="mt-10 space-y-4">
+      {
+        permissions.map((perm) => (
+          <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)] p-6">
+            <h2 class="text-base font-semibold text-[var(--text-primary)]">
+              {perm.name}
+            </h2>
+            <p class="mt-2 text-sm text-[var(--text-secondary)]">
+              <strong class="text-[var(--text-primary)]">
+                Why it is needed:
+              </strong>{' '}
+              {perm.purpose}
+            </p>
+            <p class="mt-1 text-sm text-[var(--text-secondary)]">
+              <strong class="text-[var(--text-primary)]">Your control:</strong>{' '}
+              {perm.control}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
