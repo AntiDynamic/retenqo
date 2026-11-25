@@ -12,7 +12,7 @@ Retenqo is a local-first Android AI memory and commitment assistant. It turns au
 
 ---
 
-## Problem Statement — Open Innovation
+## Problem Statement
 
 > Build a privacy-first AI assistant that helps people remember important information, recover relevant context and follow through on commitments scattered across their digital lives. The solution should transform user-authorized notifications, messages and selected media into structured personal memories, source-linked answers and actionable follow-ups, using resource-aware on-device intelligence while protecting personal information and preserving user control.
 
