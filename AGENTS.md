@@ -26,3 +26,7 @@ These rules apply to human and AI-assisted changes. Read the nearest relevant pr
 ## Evidence and release
 
 Update relevant docs with actual findings. Report exact commands and outcomes; a test source file is not proof of a passing test. Do not claim a feature is device-verified without executing it. Follow [release guidance](docs/RELEASE_PROCESS.md) and [security policy](SECURITY.md). CI workflows may run repository verification checks but must not publish releases or deploy without explicit maintainer authorization.
+
+## Evaluation evidence
+
+For material changes, use [quality gates](docs/QUALITY_GATES.md), [product requirements](docs/PRODUCT_REQUIREMENTS.md) and [security review](docs/SECURITY_REVIEW.md). Update the authoritative verification record and relevant decision entries with measured outcomes. Keep the final submission public, below its repository size limit, and on the single remote main branch.

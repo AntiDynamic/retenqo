@@ -1,6 +1,6 @@
 # Verification evidence
 
-The current stable release is v0.1.4. Recorded outcomes identify the tested artifact, source and device.
+The current stable release is v0.1.4. Recorded outcomes identify the tested artifact, source and device. Historical Android and website verification originated in the prior development repository; the current repository is a clean submission snapshot. The published APK digest matches the earlier artifact.
 
 | Scope | Recorded outcome | Source |
 | --- | --- | --- |
@@ -29,6 +29,10 @@ The declared minimum API is 33. The v0.1.4 signed upgrade and launch were verifi
 | Signing certificate SHA-256 | `b975fe4b5d929586e9bf0133ebde25c03d0acf990ddbba5c14f0f2b31ae38cca` |
 
 Source: [release notes](https://github.com/priyanshuchawda/retenqo/releases/tag/v0.1.4) and [generated website metadata](../web/src/data/release.generated.json). The release reports signature verification and successful in-place upgrade without uninstall or data reset.
+
+## Coverage and regression scope
+
+Android includes 21 JVM test source files and three instrumentation test source files; the website includes four unit test files and one browser specification. See [traceability](REQUIREMENTS_TRACEABILITY.md) and [security review](SECURITY_REVIEW.md) for specific behavioral assertions. These file counts are distinct from execution totals. Measured line and branch coverage are not yet recorded for the submission snapshot.
 
 ## Reproduction
 

@@ -19,4 +19,4 @@ Retenqo implements local-first contextual capture, personal memory and user-revi
 
 [Testing](TESTING.md) distinguishes signed-release verification, earlier Android 13 observations and implementation-only coverage. [Threat model](THREAT_MODEL.md) specifies storage and permission boundaries; [AI implementation](AI_IMPLEMENTATION.md) specifies retrieval and answer-validation scope. The [roadmap](ROADMAP.md) tracks further engineering work.
 
-Earlier dated milestones are preserved in repository history. Current test results are maintained in the verification record rather than repeated here.
+Earlier dated milestones are summarized in retained [research reports](RESEARCH_INDEX.md) and the original development repository. Current test results are maintained in the verification record rather than repeated here.

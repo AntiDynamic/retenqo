@@ -108,8 +108,12 @@ Windows: `./scripts/build-mneme.ps1 -Task verify` or `-Task assembleDebug -Insta
 
 | Document | Purpose |
 | --- | --- |
-| [Evaluation guide](docs/EVALUATION_GUIDE.md) | All eleven criteria and evidence |
+| [Evaluation guide](docs/EVALUATION_GUIDE.md) | Six evaluation criteria and evidence |
 | [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md) | Exact implementation and test references |
+| [Product requirements](docs/PRODUCT_REQUIREMENTS.md) | Acceptance criteria and feature alignment |
+| [Security review](docs/SECURITY_REVIEW.md) | Security invariants and regression evidence |
+| [Architecture decisions](docs/DECISIONS.md) | Design rationale and trade-offs |
+| [Quality gates](docs/QUALITY_GATES.md) | Reproducible engineering acceptance criteria |
 | [Architecture](docs/ARCHITECTURE.md) | Component relationships, data flow and trust boundaries |
 | [AI implementation](docs/AI_IMPLEMENTATION.md) | Extraction, retrieval, inference and research |
 | [Testing](docs/TESTING.md) | Revision-specific results |

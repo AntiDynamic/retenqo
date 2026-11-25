@@ -1,6 +1,6 @@
 # Research and engineering evidence
 
-Retenqo retains concise research reports and reproducible inputs. Generated console outputs and local device scratch files are excluded from the current checkout; earlier tracked artifacts remain in repository history. Reports preserve experimental outcomes, including unsuccessful configurations.
+Retenqo retains concise research reports and reproducible inputs. Generated console outputs and local device scratch files are excluded from the current checkout; the submission repository starts from a clean source snapshot; earlier artifacts belong to the original development repository. Reports preserve experimental outcomes, including unsuccessful configurations.
 
 | Material | Scope |
 | --- | --- |

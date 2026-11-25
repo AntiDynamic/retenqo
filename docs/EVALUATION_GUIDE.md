@@ -1,20 +1,15 @@
 # Engineering evaluation guide
 
-Retenqo addresses fragmented personal context and forgotten commitments with a local-first memory and follow-through system. This guide covers all eleven criteria; the [traceability matrix](REQUIREMENTS_TRACEABILITY.md) links specific code and tests.
+Retenqo addresses fragmented personal context and forgotten commitments with a local-first memory and follow-through system. This guide prioritizes the six automated evaluation criteria. The [traceability matrix](REQUIREMENTS_TRACEABILITY.md) retains the wider product and engineering mapping.
 
-| Criterion | Engineering contribution |
-| --- | --- |
-| Innovation | Combines authorized capture, evidence-linked recall and human-approved commitment completion rather than merely generating chat responses. |
-| Functionality | Notification capture, OCR, memory search, task review, reminders and encrypted backup paths. |
-| Technical Implementation | Kotlin, Room/SQLCipher, Android Keystore, JNI/llama.cpp, WorkManager and verified static APK distribution. |
-| UI/UX | Existing review, search and permission flows; responsive website and clear installation instructions. |
-| Practical Impact | Helps users retrieve context and recognize responsibilities without requiring cloud AI. |
-| Code Quality | Typed card models, explicit migrations, focused processing classes, Zod schemas and reusable components. |
-| Security | Encrypted database and backups, explicit capture consent, pinned APK signer and restrictive site headers. |
-| Efficiency | Deterministic extraction, quantized local inference, bounded workloads and small static web scripts. |
-| Testing | Recorded Android JVM and device tests, pooled-connection regression, web browser coverage and historical AI experiments. |
-| Accessibility | Existing labeled controls, semantic HTML, keyboard controls and theme-aware Chromium axe checks. |
-| Problem Statement Alignment | Capture → remember → retrieve → follow through, with local processing and user control. |
+| Criterion | Implemented contribution | Verification and source evidence |
+| --- | --- | --- |
+| Code Quality | Typed Kotlin domain models, modular processing, explicit migrations and validated website metadata | [Architecture](ARCHITECTURE.md), [decisions](DECISIONS.md), [testing](TESTING.md) |
+| Security | Permission-scoped capture, encrypted Room records, authenticated backups and pinned APK signer | [Security review](SECURITY_REVIEW.md), [threat model](THREAT_MODEL.md) |
+| Efficiency | Rules-first processing, quantized CPU inference, bounded intake and static distribution | [Performance](PERFORMANCE.md), [AI implementation](AI_IMPLEMENTATION.md) |
+| Testing | JVM regressions, Android instrumentation, signed upgrade, website unit and browser suites | [Testing](TESTING.md), [quality gates](QUALITY_GATES.md) |
+| Accessibility | Native labeled controls and web semantic/keyboard/axe coverage | [Accessibility](ACCESSIBILITY.md), [website accessibility](../web/docs/ACCESSIBILITY.md) |
+| Problem Statement Alignment | Capture → remember → retrieve → follow through, with local intelligence and user control | [Product requirements](PRODUCT_REQUIREMENTS.md), [traceability](REQUIREMENTS_TRACEABILITY.md) |
 
 ## Current release evidence
 
