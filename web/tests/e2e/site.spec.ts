@@ -143,6 +143,7 @@ test('synthetic workflow demo keeps approval steps explicit', async ({ page }) =
   await page.getByRole('button', { name: 'Ask the sample memory' }).click();
   await expect(page.getByRole('status')).toContainText('Friday at 4 PM');
   await page.getByRole('button', { name: 'Show sample completion evidence' }).click();
+  await page.getByRole('button', { name: 'Review completion suggestion' }).click();
   await expect(page.getByRole('heading', { name: '5. Confirm what is complete' })).toBeVisible();
   await expect(page.getByText('The task remains open until you confirm.')).toBeVisible();
   await page.getByRole('button', { name: 'Confirm sample completion' }).click();

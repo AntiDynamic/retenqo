@@ -40,7 +40,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `pnpm exec astro preview --no-background --host 127.0.0.1 --port ${previewPort}`,
+    command: `pnpm exec astro preview --host 127.0.0.1 --port ${previewPort} && node -e "setInterval(() => {}, 2147483647)"`,
     url: previewUrl,
     reuseExistingServer: false,
   },
