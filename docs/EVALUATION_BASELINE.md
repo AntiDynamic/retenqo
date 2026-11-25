@@ -7,7 +7,7 @@
 - Base branch: `main`; working branch: `codex/retenqo-quality-vercel-20261125`
 - Base checkout was clean. The existing `retenqo-enterprise` directory was left unchanged.
 - Baseline source verification recorded in `docs/TESTING.md` is historical, not a fresh run: 114 Android JVM tests; 6 Android instrumentation tests on API 36; 25 website unit tests; 98 browser passes, 68 documented skips and 2 retry passes.
-- This host has JDK 21, Node 24.20.0 and pnpm 12.21.0. Android SDK 36 and the pinned NDK/CMake are installed. No Android device/emulator or Vercel/Netlify CLI session is currently available.
+- This host has JDK 21, Node 24.20.0 and pnpm 12.21.0. Android SDK 36 and the pinned NDK/CMake are installed. No Android device/emulator is attached. Vercel CLI is authenticated and the `retenqo` project is configured for Astro with `web/` as the deployment working directory.
 
 ## Initial observations
 
@@ -24,8 +24,10 @@
 
 - `pnpm install --frozen-lockfile` stopped at pnpm's ignored build-script gate for `esbuild`. The repository CI command, `pnpm install --frozen-lockfile --allow-build esbuild`, completed successfully.
 - Fresh baseline website: `pnpm lint && pnpm typecheck && pnpm test && pnpm build` — lint/typecheck passed with zero Astro diagnostics, 25/25 Vitest passed, and 12 static pages built.
-- Android first attempt: `ANDROID_HOME=/home/anti/Android/Sdk ANDROID_SDK_ROOT=/home/anti/Android/Sdk bash ./gradlew :app:testDebugUnitTest --no-daemon --max-workers=2 --console=plain` could not resolve `:llama-runtime` before native dependencies were bootstrapped. `bash scripts/bootstrap-native-deps.sh` then provisioned the exact pinned Whisper and llama.cpp revisions. A subsequent regression run compiled the app and reported 122 tests with 2 failures in the newly added queue/future-language cases; those causes were corrected and the suite is being rerun.
-- Baseline Android lint/build results and published artifact identity remain those documented in [Testing](TESTING.md); fresh final results will be appended there only after execution.
+- Android first attempt could not resolve `:llama-runtime` before native dependencies were bootstrapped. `bash scripts/bootstrap-native-deps.sh` then provisioned the exact pinned Whisper and llama.cpp revisions. A unit-test run reported 122 tests with 2 failures in newly added queue/future-language cases; the causes were fixed. The final Android matrix (`testDebugUnitTest`, `lintDebug`, `assembleDebug`, `assembleDebugAndroidTest`) is running; its result is not yet recorded here.
+- Fresh website gate: `pnpm lint && pnpm typecheck && pnpm test && pnpm build` passed; Astro diagnostics were 0 errors/warnings/hints, 26/26 Vitest tests passed, and 13 static pages built. `pnpm audit --audit-level=low` reported no known vulnerabilities. Playwright E2E is pending because an existing Astro preview server process prevented the local Playwright server from starting; rerun after stopping it.
+- Vercel preview at `https://retenqo-kgnymqxwc-gayaladitya9-3172s-projects.vercel.app` reached READY and its `/demo` content was checked with authenticated Vercel curl. Production is live at `https://retenqo.vercel.app`; `/`, `/demo`, `/robots.txt`, `/sitemap-index.xml` all return HTTP 200 with the configured security headers. Preview deployment protection requires authentication, production alias is publicly reachable.
+- Connected Android instrumentation tests are not run: `adb devices -l` found no device/emulator. Existing APK v0.1.4 and its signing identity were not modified.
 
 ## Acceptance ledger
 

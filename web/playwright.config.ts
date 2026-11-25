@@ -40,7 +40,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `pnpm preview --host 127.0.0.1 --port ${previewPort}`,
+    command: `pnpm exec astro preview --no-background --host 127.0.0.1 --port ${previewPort}`,
     url: previewUrl,
     reuseExistingServer: false,
   },
