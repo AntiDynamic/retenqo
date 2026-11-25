@@ -46,7 +46,7 @@ class MnemeNotificationListener : NotificationListenerService() {
         val sourceId = NotificationCaptureSettings.sourceIdForPackage(sbn.packageName) ?: return
         val source = IngestSources.fromNotifLabel(candidate.sourceLabel)
         Log.i(TAG, "queue [$source] (${candidate.text.length} chars)")
-        val eventId = IngestSources.notificationEventFingerprint(sbn.packageName, sbn.key)
+        val eventId = IngestSources.notificationEventFingerprint(sbn.packageName, sbn.key, candidate.text)
         NotifIngestQueue.offer(applicationContext, sourceId, source, candidate.text, eventId)
         NotifIngestWorker.enqueueSoon(applicationContext)
     }

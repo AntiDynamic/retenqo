@@ -41,6 +41,7 @@ research/
 
 # Vendored native clones (build from Git; do not commit)
 tools/
+.vercel/
 test-assets/*.wav
 android/**/local.properties
 *.so

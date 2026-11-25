@@ -9,15 +9,17 @@ Retenqo addresses fragmented personal context and forgotten commitments with a l
 | Efficiency | Rules-first processing, quantized CPU inference, bounded intake and static distribution | [Performance](PERFORMANCE.md), [AI implementation](AI_IMPLEMENTATION.md) |
 | Testing | JVM regressions, Android instrumentation, signed upgrade, website unit and browser suites | Recorded: 114/114 JVM, 6/6 device instrumentation, 25/25 website unit tests; website library line coverage 94.59%. [Complete results and scope](TESTING.md), [quality gates](QUALITY_GATES.md) |
 | Accessibility | Native labeled controls and web semantic/keyboard/axe coverage | [Accessibility](ACCESSIBILITY.md), [website accessibility](../web/docs/ACCESSIBILITY.md) |
-| Problem Statement Alignment | Self-defined Open Innovation challenge: fragmented context, forgotten information and missed commitments with privacy-preserving mobile intelligence | [Problem and acceptance criteria](PRODUCT_REQUIREMENTS.md), [traceability](REQUIREMENTS_TRACEABILITY.md) |
+| Problem Statement Alignment | Retenqo-defined Open Innovation problem: fragmented context, forgotten information and missed commitments with privacy-preserving mobile intelligence. The organizer-selected challenge and submission SHA remain owner-side checks. | [Problem and acceptance criteria](PRODUCT_REQUIREMENTS.md), [PS-01..PS-07 traceability](REQUIREMENTS_TRACEABILITY.md), [demo scenario](DEMO_WALKTHROUGH.md) |
 
 ## Current release evidence
 
 [Retenqo v0.1.4](https://github.com/priyanshuchawda/retenqo/releases/tag/v0.1.4) is the signed Android 13+ ARM64 release. Its production upgrade and launch were verified on Android 16. The [verification record](TESTING.md) contains release identity, source tests, browser coverage and device scope. The [traceability matrix](REQUIREMENTS_TRACEABILITY.md) links source evidence.
 
-## Illustrative workflow
+## Demonstration scope
 
-An authorized message asks for slides by Friday. The processing pipeline produces a reviewable commitment. The user confirms it, retrieves its context through search or Ask, receives a reminder and can review later completion evidence. Representative workflow; device verification scope is recorded in [implementation status](IMPLEMENTATION_STATUS.md).
+An authorized message asks for slides by Friday. The processing pipeline produces a reviewable commitment. The user confirms it, retrieves its context through search or Ask, receives a reminder and can review later completion evidence. The [synthetic browser walkthrough](../web/src/pages/demo.astro) illustrates this flow with deterministic sample responses; it is not native Android execution. The native manual scenario and device evidence boundaries are in [Demo walkthrough](DEMO_WALKTHROUGH.md) and [implementation status](IMPLEMENTATION_STATUS.md).
+
+The evaluator scores for this working branch have not been measured. Prior reported category scores are historical and are not evidence for this source SHA.
 
 ## Review order
 

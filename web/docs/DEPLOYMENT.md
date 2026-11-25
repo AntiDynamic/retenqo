@@ -1,60 +1,61 @@
-# Deployment Guide
+# Website deployment
 
-## Prerequisites
+Retenqo's website is a static Astro site in `web/`. It serves Android product information and the verified GitHub APK; it does not host the Android app, its local model, or a backend.
 
-- Node.js 20+
-- pnpm 9+
-- Wrangler CLI (`npm install -g wrangler`) — authenticated via `wrangler login`
-- Access to Cloudflare Pages project `retenqo` under account `hellopriyanshu4@gmail.com`
+## Local verification
 
-## Build
+Use Node.js 20+ and the package manager pinned in `package.json` (`pnpm@12.21.0`). From `web/`:
 
-```powershell
-# From the web/ directory
-cd C:\Users\Admin\Desktop\mneme\web
-pnpm install --frozen-lockfile
+```bash
+pnpm install --frozen-lockfile --allow-build esbuild
 pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
+pnpm test:e2e
 ```
 
-The build output is written to `web/dist/`.
+The static output is `web/dist/` from repository root or `dist/` from this directory. The deployment must not contain the separately downloaded GGUF model or signing material.
 
-## Deploy to Cloudflare Pages
+## Cloudflare Pages (existing site)
 
-**Must be run from the monorepo root** (not from inside `web/`):
+Keep the existing Cloudflare project and `https://retenqo.pages.dev` intact. From the repository root after local verification:
 
-```powershell
-cd C:\Users\Admin\Desktop\mneme
+```bash
 wrangler pages deploy web/dist --project-name=retenqo
 ```
 
-- **Project name:** `retenqo`
-- **Production branch:** `main`
-- **Live URL:** https://retenqo.pages.dev
+`web/public/_headers` remains the Cloudflare Pages header policy. Release metadata is generated and signer/digest validated with `pnpm release:sync` after a real APK release; never edit `src/data/release.generated.json` by hand.
 
-## Update release metadata
+## Vercel (static Astro, secondary host)
 
-After a new APK is published to GitHub Releases:
+Vercel supports static Astro output without a server adapter. `web/vercel.json` mirrors every response header in `public/_headers`; the parity test is `tests/unit/security-headers.test.ts`. The Vercel deployment must retain the Cloudflare site and canonical URL until the owner changes that decision.
 
-```powershell
-cd C:\Users\Admin\Desktop\mneme\web
-pnpm release:sync
+For a Vercel Git import, select the owner-controlled project and set **Root Directory** to `web`, framework preset **Astro**, install command `pnpm install --frozen-lockfile --allow-build esbuild`, build command `pnpm build`, and output directory `dist`. For CLI deployment, run the CLI from this directory and verify the linked project and effective root before uploading:
+
+```bash
+cd web
+pnpm dlx vercel@latest --version
+pnpm dlx vercel@latest whoami
+pnpm dlx vercel@latest link
+pnpm dlx vercel@latest deploy
 ```
 
-This calls `scripts/sync-release.ts` which fetches the latest release from the GitHub API and writes `src/data/release.generated.json`. Commit this file and redeploy.
+After a preview passes the route, download, CSP, header, keyboard and mobile checks, production deployment is:
 
-## Environment variables
+```bash
+pnpm dlx vercel@latest deploy --prod
+```
 
-| Variable                      | Purpose                                                                                                                                                            |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `RETENQO_SIGNING_CERT_SHA256` | SHA-256 of the APK signing certificate (not the file digest). Used by `sync-release.ts`. Optional — if unset, the cert fingerprint field is omitted from metadata. |
-| `RELEASE_VERSION_CODE`        | Positive Android `versionCode` embedded in the APK being published. Required by `sync-release.ts`; read it from the app build configuration for that release.      |
-| `CLOUDFLARE_API_TOKEN`        | Alternative to interactive `wrangler login`. Use in automated/non-interactive environments.                                                                        |
+The production hostname is not known until the authorized account creates/links the project. Do not invent it or replace Cloudflare canonical metadata. Keep `.vercel/` local and untracked. The Vercel CLI/session must belong to the project owner; do not print or commit tokens.
 
-## Notes
+## Post-deployment acceptance
 
-- Wrangler uses an OAuth token stored from `wrangler login`. In non-interactive shell contexts, set `CLOUDFLARE_API_TOKEN` instead.
-- Do not create GitHub Actions CI/CD workflows for this project.
-- The build must pass all checks (`lint`, `typecheck`, `test`) before deploy.
+- Check `/`, `/features`, `/how-it-works`, `/privacy`, `/security`, `/faq`, `/download`, `/installation`, `/demo`, `/robots.txt`, `/sitemap-index.xml`, and a missing path.
+- Assert all headers, especially the restrictive CSP, against the live origin. `public/_headers` by itself does not configure Vercel.
+- Verify the canonical and OpenGraph metadata still target the existing Cloudflare host, the published APK link and digest are current, and the model is not bundled.
+- Verify keyboard flow, theme behavior, 320 px layout, and no console/page errors. The browser demo must remain labeled as synthetic rather than Android inference.
+
+## Release metadata
+
+After a correctly signed APK is published, use `pnpm release:sync` from `web/` with the release version code and pinned certificate metadata configured. The script downloads and checks the real GitHub release artifact. Do not silently replace the current signed APK or signing identity.

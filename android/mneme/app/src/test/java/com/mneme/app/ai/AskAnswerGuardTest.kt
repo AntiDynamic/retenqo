@@ -54,6 +54,20 @@ class AskAnswerGuardTest {
     }
 
     @Test
+    fun rejectsCitedTimeThatConflictsWithItsSource() {
+        val meeting = note.copy(title = "Meeting", body = "The meeting starts at 4 PM")
+        val guarded = AskAnswerGuard.sanitize("The meeting starts at 6 PM [1].", listOf(meeting))
+        assertEquals(AskAnswerGuard.REFUSE, guarded.answer)
+        assertTrue(guarded.citations.isEmpty())
+    }
+
+    @Test
+    fun acceptsScreenOnlyAnswerWhenItsWordsAreVisible() {
+        assertTrue(AskAnswerGuard.screenAnswerSupported("4 PM", "Appointment: 4 PM"))
+        assertFalse(AskAnswerGuard.screenAnswerSupported("6 PM", "Appointment: 4 PM"))
+    }
+
+    @Test
     fun detectsRefusePhrases() {
         assertTrue(AskAnswerGuard.looksLikeRefuse("I don't have that in your memory."))
         assertFalse(AskAnswerGuard.hasCitationMarker("no markers here"))

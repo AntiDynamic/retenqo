@@ -27,6 +27,16 @@ class IngestSourcesTest {
     }
 
     @Test
+    fun notificationFingerprintIsStableForRetriesAndChangesForUpdatedContent() {
+        val first = IngestSources.notificationEventFingerprint("com.whatsapp", "notification-key", "Slides by Friday")
+        val retry = IngestSources.notificationEventFingerprint("com.whatsapp", "notification-key", "Slides by Friday")
+        val update = IngestSources.notificationEventFingerprint("com.whatsapp", "notification-key", "Revised slides by Friday")
+
+        assertEquals(first, retry)
+        assertNotEquals(first, update)
+    }
+
+    @Test
     fun waMediaLabel() {
         assertEquals(
             "WA media · IMG_001.jpg",

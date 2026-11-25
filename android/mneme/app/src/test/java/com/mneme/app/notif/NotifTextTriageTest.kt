@@ -96,12 +96,26 @@ class NotifQueueLogicTest {
     }
 
     @Test
-    fun dropsDuplicateBodyAcrossSources() {
+    fun sameTextFromDifferentSourcesRemainsSeparateEvidence() {
         val once = NotifQueueLogic.offer("[]", "WA notif", "Pay ₹500 by Friday")
-        val twice = NotifQueueLogic.offer(once, "Pulse", "pay  ₹500  by friday")
-        assertEquals(1, NotifQueueLogic.size(twice))
+        val twice = NotifQueueLogic.offer(once, "Gmail notif", "Pay ₹500 by Friday")
+        assertEquals(2, NotifQueueLogic.size(twice))
         assertTrue(twice.contains("WA notif"))
-        assertFalse(twice.contains("Pulse"))
+        assertTrue(twice.contains("Gmail notif"))
+    }
+
+    @Test
+    fun stableQueueDeduplicatesOnlyTheSameSourceEvent() {
+        val eventId = "a".repeat(64)
+        val event = NotifQueueLogic.offerStable("[]", "[]", "whatsapp", "WA notif", "Send slides", sourceEventId = eventId)
+        val retry = NotifQueueLogic.offerStable(event, "[]", "whatsapp", "WA notif", "Send slides", sourceEventId = eventId)
+        val otherSource = NotifQueueLogic.offerStable(retry, "[]", "gmail", "Gmail notif", "Send slides", sourceEventId = "b".repeat(64))
+        val updated = NotifQueueLogic.offerStable(otherSource, "[]", "whatsapp", "WA notif", "Send revised slides", sourceEventId = "c".repeat(64))
+
+        assertEquals(1, NotifQueueLogic.size(event))
+        assertEquals(1, NotifQueueLogic.size(retry))
+        assertEquals(2, NotifQueueLogic.size(otherSource))
+        assertEquals(3, NotifQueueLogic.size(updated))
     }
 
     @Test

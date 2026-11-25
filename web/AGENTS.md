@@ -6,7 +6,7 @@ These rules apply to all human and AI-assisted changes inside the `web/` directo
 
 - **Framework:** Astro (static output) · TypeScript strict mode · Tailwind CSS v4
 - **Package manager:** pnpm with frozen lockfile — always use `--frozen-lockfile`
-- **No CI/CD:** All checks are local only. Do not create `.github/workflows/` files inside `web/`.
+- The repository has a root GitHub Actions workflow for verification. Do not add website deployment automation or publish workflows without explicit maintainer authorization.
 - **No backend, no database, no authentication, no analytics, no tracking cookies.**
 - **No `any` type, no non-null assertions (`!`), no `@ts-ignore`.**
 - **No `lucide-astro`** — use emoji icons or inline SVGs only.
@@ -35,11 +35,11 @@ web/
 
 ## Workflow
 
-1. **Never touch `../android/`** — that directory is completely off-limits.
+1. Keep website changes in `web/`. Cross-project Android changes follow the root `AGENTS.md` and require explicit task scope; this website-only instruction does not override an authorized repository-wide task.
 2. Run all checks from inside `web/`: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.
 3. Fix all reported errors before committing. Record exact command output as evidence.
 4. Use `Button.astro` for all primary/secondary CTA actions — never raw `<a>` tags with inline button styles.
-5. All text claims must reflect verified implementation facts. Do not claim "encrypted at rest", "ASVS-aligned" without documentation, or "guaranteed" AI accuracy.
+5. All text claims must reflect verified implementation facts. Retenqo uses SQLCipher for its Room database, but do not imply every app-private file or preference is application-encrypted. Do not claim "ASVS-aligned" without documentation or guaranteed AI accuracy.
 
 ## Commands (run from `web/`)
 
@@ -69,7 +69,7 @@ wrangler pages deploy web/dist --project-name=retenqo
 
 ## Content rules
 
-- **Privacy claims:** Do not say "encrypted at rest" (Room is not encrypted by default). Backup exports are password-protected — that is accurate.
+- **Privacy claims:** Describe encryption scope precisely: SQLCipher protects the Room database and password-derived encryption protects new backup exports; app-private queue preferences and all other files are not automatically covered. Backup exports are password-protected.
 - **AI claims:** Say "references" or "cites" the source — not "verifies" or "guarantees".
 - **Accessibility:** State it as a "target" unless independently tested and confirmed.
 - **Permissions:** Every Android permission must be listed and explained in `permissions.astro`.

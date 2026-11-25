@@ -26,9 +26,27 @@ export interface FeatureStory {
 export const FEATURES: readonly Feature[] = [
   {
     icon: 'inbox',
-    title: 'Opt-in notification capture',
+    title: 'Smart Capture & Commitment Detection',
     description:
-      'Choose from supported notification sources. Capture starts paused and can be revoked in Android Settings.',
+      'Choose supported notification sources, review detected commitment suggestions, and keep their original source. Capture starts paused and can be revoked in Android Settings.',
+  },
+  {
+    icon: 'sparkles',
+    title: 'Offline AI Memory & Recall',
+    description:
+      'Ask about saved context and review the returned memory cards. Personal memory questions use local retrieval and on-device inference when the model is installed.',
+  },
+  {
+    icon: 'calendar',
+    title: 'Smart Reminders & Completion Tracking',
+    description:
+      'Review and edit commitments, schedule local reminders, and decide whether evidence should mark a task complete.',
+  },
+  {
+    icon: 'quote',
+    title: 'Memory source cards',
+    description:
+      'Memory-backed answers can point to the retrieved cards; general answers may not cite saved memories.',
   },
   {
     icon: 'image',
@@ -41,24 +59,6 @@ export const FEATURES: readonly Feature[] = [
     title: 'Voice notes',
     description:
       'Record a note when you choose and transcribe it locally with the installed speech model.',
-  },
-  {
-    icon: 'sparkles',
-    title: 'Local memory assistant',
-    description:
-      'Search saved context in natural language and ask general questions with the on-device model.',
-  },
-  {
-    icon: 'quote',
-    title: 'Memory source cards',
-    description:
-      'Memory-backed answers can point to the retrieved cards; general answers may not cite saved memories.',
-  },
-  {
-    icon: 'calendar',
-    title: 'Commitment review and reminders',
-    description:
-      'Review proposed commitments, edit their details, and schedule local reminders after you confirm them.',
   },
   {
     icon: 'lock',
@@ -82,22 +82,22 @@ export const FEATURES: readonly Feature[] = [
 
 export const FEATURE_STORIES: readonly FeatureStory[] = [
   {
-    eyebrow: '01 · Capture',
-    title: 'Start with what you choose to save.',
+    eyebrow: '01 · Smart Capture & Commitment Detection',
+    title: 'Capture selected context and review suggested commitments.',
     body: 'Enable only supported notification groups, select files explicitly, or record a voice note when you need it.',
     icon: 'inbox',
     sample:
       'A selected message or image enters Retenqo only through a permission or action you control.',
   },
   {
-    eyebrow: '02 · Remember',
-    title: 'Keep useful context in a private local library.',
+    eyebrow: '02 · Offline AI Memory & Recall',
+    title: 'Ask about saved details with local retrieval.',
     body: 'Review captured cards and retrieve them with local search. The Room database is encrypted on the device.',
     icon: 'lock',
     sample: 'Example: “The apartment inspection is on Friday at 2.”',
   },
   {
-    eyebrow: '03 · Follow through',
+    eyebrow: '03 · Smart Reminders & Completion Tracking',
     title: 'Turn evidence into a task you approve.',
     body: 'Review proposed commitments, correct the details, and choose whether to create a local reminder.',
     icon: 'calendar',

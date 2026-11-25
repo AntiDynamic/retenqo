@@ -24,7 +24,11 @@ interface FollowThroughDao {
     @Query("SELECT * FROM follow_through_suggestions WHERE id = :id AND state = 'pending' LIMIT 1")
     suspend fun pendingById(id: Long): FollowThroughSuggestion?
 
-    @Query("UPDATE notes SET cardStatus = 'done', statusChangedAt = :changedAt, snoozedUntil = NULL WHERE id = :commitmentId")
+    @Query(
+        """UPDATE notes SET cardStatus = 'done', statusChangedAt = :changedAt, snoozedUntil = NULL
+           WHERE id = :commitmentId AND reviewState = 'confirmed'
+             AND (cardStatus = 'open' OR (cardStatus = 'snoozed' AND snoozedUntil <= :changedAt))""",
+    )
     suspend fun markCommitmentDone(commitmentId: Long, changedAt: Long): Int
 
     @Insert
@@ -42,6 +46,8 @@ interface FollowThroughDao {
     @Transaction
     suspend fun acceptAndComplete(id: Long, changedAt: Long): Long? {
         val suggestion = pendingById(id) ?: return null
+        val commitment = commitmentById(suggestion.commitmentId) ?: return null
+        if (!commitment.isActive(changedAt)) return null
         if (markCommitmentDone(suggestion.commitmentId, changedAt) == 0) return null
         if (!setSuggestionStateAndRecord(id, FollowThroughSuggestion.State.ACCEPTED, changedAt)) return null
         return suggestion.commitmentId

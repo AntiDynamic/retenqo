@@ -23,6 +23,7 @@ object CompletionEvidenceAgent {
         evidence: String,
         commitments: List<NoteEntity>,
     ): Decision? {
+        if (!FollowThroughMatcher.isAffirmativeCompletionEvidence(evidence)) return null
         val eligible = commitments.asSequence()
             .filter { it.isActive() && it.type() in FOLLOW_THROUGH_TYPES }
             .sortedByDescending { it.createdAt }

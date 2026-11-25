@@ -48,4 +48,13 @@ class DueDateGuessTest {
         val ms = DueDateGuess.guess("Assignment due 28/8", today)
         assertNotNull(ms)
     }
+
+    @Test
+    fun parsesSlashDatesAsDayMonthForIndianProductLocale() {
+        val ms = DueDateGuess.guess("Submit by 05/12/2026", today)
+        assertNotNull(ms)
+        val date = java.time.Instant.ofEpochMilli(ms!!)
+            .atZone(ZoneId.systemDefault()).toLocalDate()
+        assertEquals(LocalDate.of(2026, 12, 5), date)
+    }
 }

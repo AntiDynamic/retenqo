@@ -933,9 +933,13 @@ class MnemeViewModel(
 
     fun acceptCompletionSuggestion(suggestion: FollowThroughSuggestion) {
         viewModelScope.launch {
-            DueReminderScheduler.cancel(getApplication(), suggestion.commitmentId)
-            notes.acceptCompletionSuggestion(suggestion.id, suggestion.commitmentId)
-            _ui.value = _ui.value.copy(status = "Commitment marked done from confirmed evidence")
+            val accepted = notes.acceptCompletionSuggestion(suggestion.id, suggestion.commitmentId)
+            if (accepted) {
+                DueReminderScheduler.cancel(getApplication(), suggestion.commitmentId)
+                _ui.value = _ui.value.copy(status = "Commitment marked done from confirmed evidence")
+            } else {
+                _ui.value = _ui.value.copy(status = "This completion suggestion is no longer available")
+            }
         }
     }
 

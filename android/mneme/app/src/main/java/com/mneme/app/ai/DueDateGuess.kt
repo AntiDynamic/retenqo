@@ -43,8 +43,13 @@ object DueDateGuess {
                 yRaw.length == 2 -> 2000 + yRaw.toInt()
                 else -> yRaw.toInt()
             }
-            // Prefer D/M when day>12, else M/D (US) — clamp safely
-            val (month, day) = if (a > 12) b to a else a to b
+            // Retenqo's India-first date convention is D/M. A second field above 12
+            // can only be a day, so that unambiguous M/D form remains accepted.
+            val (month, day) = when {
+                a > 12 -> b to a
+                b > 12 -> a to b
+                else -> b to a
+            }
             return localDateMillis(year, month, day)
         }
         SLASH_WITH_YEAR.find(text)?.let { m ->
@@ -52,7 +57,11 @@ object DueDateGuess {
             val b = m.groupValues[2].toIntOrNull() ?: return@let
             val yRaw = m.groupValues[3]
             val year = if (yRaw.length == 2) 2000 + yRaw.toInt() else yRaw.toInt()
-            val (month, day) = if (a > 12) b to a else a to b
+            val (month, day) = when {
+                a > 12 -> b to a
+                b > 12 -> a to b
+                else -> b to a
+            }
             return localDateMillis(year, month, day)
         }
         return null

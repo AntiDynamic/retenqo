@@ -45,11 +45,11 @@ class NoteRepository(
         return suggestionId
     }
 
-    suspend fun acceptCompletionSuggestion(id: Long, commitmentId: Long) {
-        val store = followThroughDao ?: return
+    suspend fun acceptCompletionSuggestion(id: Long, commitmentId: Long): Boolean {
+        val store = followThroughDao ?: return false
         // Keep the supplied id pairing honest and make accepting/closing atomic.
-        if (store.pendingById(id)?.commitmentId != commitmentId) return
-        store.acceptAndComplete(id, System.currentTimeMillis())
+        if (store.pendingById(id)?.commitmentId != commitmentId) return false
+        return store.acceptAndComplete(id, System.currentTimeMillis()) == commitmentId
     }
 
     suspend fun dismissCompletionSuggestion(id: Long) {

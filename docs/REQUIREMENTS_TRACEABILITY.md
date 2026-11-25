@@ -2,6 +2,8 @@
 
 Exact source and test references make the implementation inspectable. For recorded results and their scope, see [Testing](TESTING.md) and [implementation status](IMPLEMENTATION_STATUS.md) for current boundaries.
 
+The row IDs **PS-01..PS-07** in the self-defined Open Innovation mapping are documented in [Product requirements](PRODUCT_REQUIREMENTS.md). The actual Hack2Skill challenge selection is not available in this repository and must be verified in the owner's submission account.
+
 | Criterion | Requirement / achievement | Source | Evidence |
 | --- | --- | --- | --- |
 | Innovation | Evidence-linked commitment lifecycle, local suggestions and human approval | [FollowThroughMatcher.kt](../android/mneme/app/src/main/java/com/mneme/app/data/FollowThroughMatcher.kt), [CommitmentHistoryEvent.kt](../android/mneme/app/src/main/java/com/mneme/app/data/CommitmentHistoryEvent.kt) | Commitment lifecycle implementation; see device verification scope in [Testing](TESTING.md) |

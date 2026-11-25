@@ -55,14 +55,46 @@ object NotifQueueLogic {
         val entry = encode(source, text, sourceEventId)
         val items = parse(existingJson).toMutableList()
         if (items.lastOrNull() == entry) return encodeList(items)
-        // Drop spam: same message body already queued (any source)
-        val norm = text.replace(Regex("\\s+"), " ").trim().lowercase()
-        if (items.any { decodeEntry(it).text.replace(Regex("\\s+"), " ").trim().lowercase() == norm }) {
+        val normalizedText = normalizeText(text)
+        val duplicate = items.any { raw ->
+            val existing = decodeEntry(raw)
+            if (!sourceEventId.isNullOrBlank()) {
+                existing.sourceEventId == sourceEventId
+            } else {
+                existing.source == source && normalizeText(existing.text) == normalizedText
+            }
+        }
+        if (duplicate) {
             return encodeList(items)
         }
         items.add(entry)
         val trimmed = if (items.size > max) items.takeLast(max) else items
         return encodeList(trimmed)
+    }
+
+    /** Queue a consent-scoped event while deduplicating exact retries, not matching text. */
+    fun offerStable(
+        pendingJson: String,
+        inFlightJson: String,
+        sourceId: String,
+        source: String,
+        text: String,
+        max: Int = 500,
+        sourceEventId: String? = null,
+    ): String {
+        val pending = parse(pendingJson)
+        val nextEntry = encodeStable(sourceId, source, text, sourceEventId)
+        val existingEntries = parse(inFlightJson) + pending
+        val duplicate = existingEntries.any { raw ->
+            val existing = decodeEntry(raw)
+            if (!sourceEventId.isNullOrBlank()) {
+                existing.sourceEventId == sourceEventId
+            } else {
+                existing.sourceId == sourceId && existing.source == source &&
+                    normalizeText(existing.text) == normalizeText(text)
+            }
+        }
+        return if (duplicate) encodeList(pending) else encodeList((pending + nextEntry).takeLast(max))
     }
 
     /** Back-compat: treat bare text as source=Notif */
@@ -132,4 +164,6 @@ object NotifQueueLogic {
 
     private fun escape(s: String): String =
         s.replace("\\", "\\\\").replace("\"", "\\\"")
+
+    private fun normalizeText(text: String): String = text.replace(Regex("\\s+"), " ").trim().lowercase()
 }

@@ -22,14 +22,15 @@ object NotifIngestQueue {
     fun offer(context: Context, sourceId: String, source: String, text: String, sourceEventId: String?) {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val current = NotifQueueLogic.entries(prefs.getString(KEY, "[]") ?: "[]")
-        val nextEntry = NotifQueueLogic.encodeStable(sourceId, source, text, sourceEventId)
-        val duplicate = current.any { encoded ->
-            NotifQueueLogic.decodeEntry(encoded).text.trim().replace(Regex("\\s+"), " ")
-                .equals(text.trim().replace(Regex("\\s+"), " "), ignoreCase = true)
-        }
-        val next = if (duplicate) NotifQueueLogic.encodeEntries(current) else {
-            NotifQueueLogic.encodeEntries((current + nextEntry).takeLast(MAX))
-        }
+        val next = NotifQueueLogic.offerStable(
+            pendingJson = NotifQueueLogic.encodeEntries(current),
+            inFlightJson = prefs.getString(IN_FLIGHT_KEY, "[]") ?: "[]",
+            sourceId = sourceId,
+            source = source,
+            text = text,
+            max = MAX,
+            sourceEventId = sourceEventId,
+        )
         check(prefs.edit().putString(KEY, next).commit()) { "Unable to persist notification queue" }
     }
 
@@ -88,7 +89,12 @@ object NotifIngestQueue {
                 NotifQueueLogic.encodeStable(it, item.source, item.text, item.sourceEventId)
             } ?: NotifQueueLogic.encode(item.source, item.text, item.sourceEventId)
             val entries = NotifQueueLogic.entries(encoded)
-            if (entries.none { NotifQueueLogic.decodeEntry(it).text == item.text }) {
+            val duplicate = entries.any { raw ->
+                val existing = NotifQueueLogic.decodeEntry(raw)
+                if (!item.sourceEventId.isNullOrBlank()) existing.sourceEventId == item.sourceEventId
+                else raw == entry
+            }
+            if (!duplicate) {
                 encoded = NotifQueueLogic.encodeEntries((entries + entry).takeLast(MAX))
             }
         }

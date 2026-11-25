@@ -36,17 +36,18 @@ import PhoneFrame from '../ui/PhoneFrame.astro';
         class="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
         style="color: var(--text-primary); line-height: 1.08;"
       >
-        Your life.<br />Your memories.<br />
-        <span style="color: var(--accent-primary);">Your intelligence.</span>
+        Important messages<br />shouldn’t become<br />
+        <span style="color: var(--accent-primary);">forgotten commitments.</span>
       </h1>
 
       <p
         class="mt-6 max-w-xl text-lg leading-relaxed sm:text-xl"
         style="color: var(--text-secondary);"
       >
-        Messages, screenshots, and commitments are easy to lose across apps.
-        Retenqo lets you save selected context, find it later, and turn a
-        commitment into a reminder you approve—all on your Android device.
+        Retenqo helps you capture selected phone context, recall saved details
+        with on-device AI, and follow through with reminders you approve. Your
+        personal memory stays on your Android device; the model is a separate,
+        optional download.
       </p>
 
       <div class="mt-10 flex flex-wrap items-center gap-4">
@@ -78,6 +79,9 @@ import PhoneFrame from '../ui/PhoneFrame.astro';
             ></path></svg
           >
           Explore source
+        </Button>
+        <Button href="/demo" variant="secondary" size="lg">
+          See the synthetic walkthrough
         </Button>
       </div>
 
@@ -193,13 +197,13 @@ import PhoneFrame from '../ui/PhoneFrame.astro';
           class="text-[9px] font-bold tracking-wider uppercase"
           style="color: var(--accent-primary);"
         >
-          AI Answer
+            Sample answer
         </p>
         <p class="mt-1 text-xs font-medium" style="color: var(--text-primary);">
-          Deadline detected: Friday 5 PM
+          Friday at 4 PM · from sample memory
         </p>
         <p class="mt-0.5 text-[9px]" style="color: var(--status-success);">
-          Source: Team chat · illustrative
+          Synthetic example · no Android inference
         </p>
       </div>
     </div>

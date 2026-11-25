@@ -2,7 +2,7 @@
 
 > Historical development record. Current implementation and release evidence: [engineering status](../docs/IMPLEMENTATION_STATUS.md), [verification](../docs/TESTING.md), [research index](../docs/RESEARCH_INDEX.md).
 
-These cannot be fully automated: MediaProjection consent, airplane toggle, and Gallery are human taps. Film on the **Redmi** for Round 1. Caption every clip: **daily phone · no Hexagon**.
+These cannot be fully automated: MediaProjection consent, airplane toggle, and Gallery are human taps. Film on an authorized Android 13+ ARM64 device and record the exact device/API and app revision. Do not claim device results from an illustrative mockup.
 
 ## A. Ephemeral Pulse (sensitive dummy → empty gallery)
 
@@ -49,9 +49,8 @@ If you cannot inject notifs today, skip for the video; keep it on the slide as �
 
 ## E. Focus (optional for Round 1 video)
 
-- Live 10–15s on this Redmi: label **CPU, not NPU**.
-- Or film ~40s and edit **4×** with caption `real-time, sped up · no Hexagon`.
-- Hero NPU Focus is **30h on iQOO 15**, not this clip.
+- If showing model generation, identify the actual model and device. Do not imply NPU acceleration unless that path was verified on the recorded device.
+- If the clip is sped up, label playback as edited and retain an unedited source recording.
 
 ## F. Video assembly (75–90s, captions on, no IDE)
 
@@ -62,13 +61,13 @@ If you cannot inject notifs today, skip for the video; keep it on the slide as �
 | 20–35s | Conflict Ask *or* photo-due |
 | 35–50s | Pulse dummy → Gallery empty |
 | 50–75s | Focus 4× **or** mark one card Done |
-| 75–90s | Title card: Retenqo · on-device cards · GitHub `priyanshuchawda/mneme` |
+| 75–90s | Title card: Retenqo · on-device memory · GitHub `priyanshuchawda/retenqo` |
 
 Export 1080p, unlisted YouTube/Drive for the form.
 
 ## You do / I do
 
-| You (device in hand) | Agent (this machine) |
-|----------------------|----------------------|
-| Pulse consent, airplane toggle, Gallery, optional Focus | App stills via ADB, eval graphics, 14-slide PPT, form blurb |
-| Say when A/B/C are filmed | Drop stills into the deck and trim the shot list |
+| Device recording | Evidence handling |
+|------------------|-------------------|
+| Capture consent, airplane-mode recall, gallery check, and optional model flow | Record exact device/API/app revision; use synthetic data and retain unedited clips |
+| Perform TalkBack and keyboard checks where available | Do not invent screenshots, device performance, or evaluator results |

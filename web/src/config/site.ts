@@ -6,7 +6,7 @@ import { RELEASE_CONFIG } from './product';
 
 export const SITE_CONFIG = {
   name: 'Retenqo',
-  tagline: 'Your life. Your memories. Your intelligence.',
+  tagline: 'Private memory. Clear follow-through.',
   description:
     'Retenqo is a private, on-device AI personal memory assistant for Android. Capture important information, track commitments, and retrieve memories locally.',
   url: 'https://retenqo.pages.dev',

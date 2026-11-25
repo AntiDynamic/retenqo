@@ -68,7 +68,9 @@ class MemoryAsk(
                 val guarded = AskAnswerGuard.sanitize(cleaned, relevantHits)
                 return AskResult(guarded.answer, guarded.citations)
             }
-            val answer = if (cleaned.isBlank() || AskAnswerGuard.looksLikeRefuse(cleaned)) {
+            val answer = if (AskAnswerGuard.screenAnswerSupported(cleaned, screenContext.text)) {
+                cleaned.take(400)
+            } else if (cleaned.isBlank() || AskAnswerGuard.looksLikeRefuse(cleaned)) {
                 "I couldn't find that on the current screen or in relevant saved memories."
             } else {
                 AskAnswerGuard.REFUSE
