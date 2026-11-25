@@ -27,17 +27,33 @@ Retenqo is a local-first Android AI memory and commitment assistant. It turns au
 | --- | --- |
 | Android [v0.1.4](https://github.com/priyanshuchawda/retenqo/releases/tag/v0.1.4) | Signed release built and verified; 114 JVM tests passed and 6/6 instrumentation tests passed on the source before the version-only bump |
 | Physical-device release upgrade | Existing production installation upgraded and launched successfully on Android 16 / API 36; original first-install timestamp retained |
-| Android source verification | Lint reported zero errors; see the [verification record](docs/TESTING.md) for scope |
-| Website verification baseline | 25 unit tests, 100 browser tests passed (68 skipped); dependency audit reported no known vulnerabilities |
+| Android source verification | 114/114 JVM tests passed, zero failures/errors/skips; zero Android Lint errors |
+| Website unit verification | 25/25 tests passed; V8 coverage of configured library scope: 94.59% lines, 93.75% statements, 92.85% branches, 100% functions |
+| Website quality | 12 static pages built; lint and type checks passed; website dependency audit reported no known vulnerabilities |
+| Website browser verification | Latest recorded run: 98 passed, 2 flaky cases passed on retry, 68 skipped |
 | Production Lighthouse, one mobile-simulated run | Performance 92, accessibility 100, best practices 100, SEO 100; LCP 1.263 s, CLS 0 |
 
-Android and website evidence is scoped to the recorded release or source baseline. See [verification scope](docs/TESTING.md).
+These are recorded results from the 25 November verification report and published release, scoped to their tested revisions. Website coverage is not Android coverage. See [complete results, coverage and provenance](docs/TESTING.md).
 
-## Problem and solution
+## Open Innovation — Problem statement
 
-Important information is scattered across notifications, conversations, screenshots, documents and personal notes. Finding the original message is often easier than remembering the responsibility it contained. Retenqo connects contextual capture, private memory, evidence-aware recall and human-controlled follow-through in the personal productivity / on-device AI vertical.
+Everyday digital context is fragmented across notifications, messages, images and documents. People lose time reconstructing important information, miss commitments buried in conversations and struggle to follow through. Existing search and task tools often require manual organization, while cloud-based AI may expose sensitive personal context or require connectivity.
 
-Unlike an autonomous phone agent, Retenqo uses supported Android APIs, explicit permissions and user approval of uncertain task updates.
+**Open Innovation challenge:** Build a privacy-first, mobile personal-intelligence system that turns user-authorized context into structured, retrievable memories and reviewable commitments; supports evidence-linked recall and timely follow-through; and uses resource-aware on-device processing while preserving user consent and decision authority.
+
+### Retenqo's solution
+
+Retenqo connects context capture, local AI, protected memory, evidence-aware recall and commitment review into a single Android workflow. Supported platform permissions and human approval keep capture and consequential updates under user control.
+
+| Problem | Implemented solution | Engineering evidence |
+| --- | --- | --- |
+| Fragmented context | Seven configurable notification groups, selected media, sharing and OCR | [Architecture](docs/ARCHITECTURE.md) |
+| Forgotten information | Local structured records, lexical ranking and evidence-linked Ask | [AI implementation](docs/AI_IMPLEMENTATION.md) |
+| Missed commitments | Reviewable deadlines, reminders and completion evidence | [Traceability](docs/REQUIREMENTS_TRACEABILITY.md) |
+| Sensitive personal data | Local inference, SQLCipher Room and authenticated backup exports | [Security review](docs/SECURITY_REVIEW.md) |
+| Mobile resource constraints | Rules-first extraction, quantized inference and bounded workloads | [Performance](docs/PERFORMANCE.md) |
+
+This is the project's self-defined Open Innovation problem, not a quoted external challenge. See [product requirements](docs/PRODUCT_REQUIREMENTS.md) and [evaluation alignment](docs/EVALUATION_GUIDE.md).
 
 ## How it works
 

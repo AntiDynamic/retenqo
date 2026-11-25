@@ -1,20 +1,61 @@
-# Verification evidence
+# Verification evidence — 25 November 2026
 
-The current stable release is v0.1.4. Recorded outcomes identify the tested artifact, source and device. Historical Android and website verification originated in the prior development repository; the current repository is a clean submission snapshot. The published APK digest matches the earlier artifact.
+**Release:** [Retenqo v0.1.4](https://github.com/priyanshuchawda/retenqo/releases/tag/v0.1.4)
 
-| Scope | Recorded outcome | Source |
+The recorded evidence combines Android JVM XML results, device release verification and website test/build results. It is scoped to the tested development revisions and published artifact, not a fresh execution of this documentation revision.
+
+## Quality verification
+
+| Check | Recorded result | Scope |
 | --- | --- | --- |
-| Published v0.1.4 | Signed APK built; pinned single signer verified; in-place production upgrade and launch successful on Xiaomi 2406ERN9CI, Android 16/API 36, ARM64 | [Release notes](https://github.com/priyanshuchawda/retenqo/releases/tag/v0.1.4) |
-| v0.1.4 source before version-only bump | 114 JVM tests passed; 6/6 Android instrumentation tests passed; Android Lint reported zero errors | [Implementation status](IMPLEMENTATION_STATUS.md) |
-| Website verification baseline | 25 unit tests, 100 browser tests passed, 68 skipped; format/lint/type/build passed; dependency audit reported no known vulnerabilities | [Audit](../web/docs/ENGINEERING_AUDIT.md) |
-| Historical offline generation | Galaxy M32/API 33: Qwen3.5-0.8B Q4_0 answered a short general question with connectivity disabled; earlier Room schema migration and note preservation observed | Historical development record |
-| Earlier model experiments | Exploratory host and phone measurements | [Research index](RESEARCH_INDEX.md) |
+| Android JVM | 114/114 passed; 0 failures, 0 errors, 0 skipped | 21 JUnit XML result files |
+| Android instrumentation | 6/6 passed | Earlier v0.1.4 device run, Android 16/API 36; no new device run in report |
+| Android Lint | 0 errors, 34 warnings, 1 hint | Local XML |
+| Android builds | Debug and AndroidTest APK assembly passed | Recorded development source |
+| Signed release | Publisher signature verified; in-place upgrade and launch succeeded | Published APK, Android 16/API 36 |
+| Website Vitest | 25/25 passed, 4 files | Local migrated worktree |
+| Website browser tests | 98 passed, 68 skipped, 2 flaky tests passed on retry | Latest recorded development run; Chromium, Firefox, WebKit |
+| Website production build | 12 static pages; 0 errors, 0 warnings, 0 hints | Local migrated worktree |
+| Website lint and typecheck | Passed; type diagnostics 0 errors, warnings, hints | Local migrated worktree |
+| Website dependency audit | No known vulnerabilities | pnpm dependency graph and lockfile only |
+| Website formatting | Earlier Linux check passed; local combined verify stopped at formatting | Windows CRLF checkout: 61 files flagged; individual lint, type, test and build checks passed |
 
-The concurrent-read device test reproduced the SQLCipher authentication failure before the fix. After retaining the required key array, the reported six tests passed. See [MnemeDatabaseDeviceTest.kt](../android/mneme/app/src/androidTest/java/com/mneme/app/data/MnemeDatabaseDeviceTest.kt) and [MnemeDatabase.kt](../android/mneme/app/src/main/java/com/mneme/app/data/MnemeDatabase.kt). The published v0.1.4 APK includes this fix. Signed upgrade verification succeeded on API 36; the same release's API 33 upgrade coverage remains to be established.
+The two browser retry cases were dark-theme accessibility checks on the privacy desktop and FAQ mobile pages. An earlier browser baseline recorded 100 passes and 68 skips; the latest run supersedes it for current reporting. Full axe coverage was scoped to Chromium desktop/mobile, with smoke coverage on Firefox/WebKit.
+
+## Measured coverage
+
+Coverage is recorded separately for the configured website library scope and Android JVM-instrumented debug classes. These are not comparable whole-product coverage metrics.
+
+| Website V8 metric | Covered / total | Coverage |
+| --- | --- | --- |
+| Statements | 45 / 48 | 93.75% |
+| Lines | 35 / 37 | 94.59% |
+| Functions | 9 / 9 | 100% |
+| Branches | 39 / 42 | 92.85% |
+
+Website measurement: Vitest 5.1.1 with V8; configured scope `src/lib/**/*.ts`. It does not represent all website pages or Android source.
+
+| Android JaCoCo metric | Covered / total | Coverage |
+| --- | --- | --- |
+| Instructions | 6,405 / 61,958 | 10.34% |
+| Lines | 830 / 7,138 | 11.63% |
+| Methods | 210 / 1,219 | 17.23% |
+| Branches | 540 / 4,076 | 13.25% |
+| Classes | 47 / 231 | 20.35% |
+
+Android measurement: JaCoCo 0.8.13, debug classes with `testDebugUnitTest` execution data, using a temporary Gradle init script. It does not include device instrumentation or native C/C++ coverage. The coverage setup is not yet committed; report values are the supplied measurement rather than a reproducible checked-in coverage gate.
+
+## Source provenance
+
+- Earlier development verification revision: `317192923586f81007679a5cb6b0da642b310285` in the original development repository.
+- Local Android test/lint artifacts: `49a24a902984c313cd4902148b70aa23e0e18608`; Android source was unchanged between the two earlier revisions.
+- Local website run: development revision plus 16 repository-name/release-link edits; diff SHA-256 `b8c20d11e52e4743ffe1668d4cfb856038facf9bfacc48ec460fc8bd61c9cd24`.
+- Clean submission baseline: `834b04e62dedc2cf412c7f5fc2c967489ecd9411`. Repository tree comparison confirms the Kotlin app and test files match the earlier development revision; two native Whisper JNI files and several website files differ. The published APK digest matches the previous release artifact.
+- The above results were supplied in the 25 November verification report. No fresh runtime test was executed as part of documenting it.
 
 ## Device and workflow coverage
 
-The declared minimum API is 33. The v0.1.4 signed upgrade and launch were verified on API 36. Earlier Galaxy M32/API 33 observations covered local model generation, migration, launch and selected controls, not the v0.1.4 signed upgrade. The Galaxy M34 and full voice, reminder delivery, picker/share, screen-context and encrypted backup restore workflows require additional physical-device verification. Automated crypto and business-logic coverage is linked in [traceability](REQUIREMENTS_TRACEABILITY.md).
+The signed v0.1.4 upgrade succeeded on Android 16/API 36 (Xiaomi 2406ERN9CI). The six earlier instrumentation tests include the pooled SQLCipher connection regression, migration and crypto tests. The release retains encrypted database protection. Earlier Galaxy M32/API 33 observations covered local model generation with connectivity disabled, database migration and selected controls. The declared compatibility minimum is API 33; v0.1.4 API 33 upgrade, Galaxy M34 and full voice, reminder delivery, picker/share, screen-context and encrypted backup restore workflows require additional physical-device verification. See [security review](SECURITY_REVIEW.md) and [traceability](REQUIREMENTS_TRACEABILITY.md).
 
 ## Published artifact identity
 
@@ -30,18 +71,22 @@ The declared minimum API is 33. The v0.1.4 signed upgrade and launch were verifi
 
 Source: [release notes](https://github.com/priyanshuchawda/retenqo/releases/tag/v0.1.4) and [generated website metadata](../web/src/data/release.generated.json). The release reports signature verification and successful in-place upgrade without uninstall or data reset.
 
-## Coverage and regression scope
 
-Android includes 21 JVM test source files and three instrumentation test source files; the website includes four unit test files and one browser specification. See [traceability](REQUIREMENTS_TRACEABILITY.md) and [security review](SECURITY_REVIEW.md) for specific behavioral assertions. These file counts are distinct from execution totals. Measured line and branch coverage are not yet recorded for the submission snapshot.
+## Toolchain recorded
+
+| Area | Versions |
+| --- | --- |
+| Android | JDK 21, Gradle 8.14.3, AGP 8.13.2, Kotlin 2.4.10, compile/target API 36, minimum API 33 |
+| Native | NDK 28.2.13676358, CMake 4.1.2 |
+| Website local | Node 26.13.1, pnpm 12.21.0, Astro 7.4.13, Vitest 5.1.1, Playwright 1.65.1 |
+| Coverage | JaCoCo 0.8.13, Vitest V8 |
 
 ## Reproduction
-
-From the root on Windows: `./scripts/build-mneme.ps1 -Task verify`.
 
 From `android/mneme/`:
 
 ```bash
-./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
+./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
 ./gradlew :app:connectedDebugAndroidTest
 ```
 
@@ -49,9 +94,10 @@ From `web/`:
 
 ```bash
 pnpm verify
+pnpm test:coverage
 pnpm test:e2e
-pnpm audit
+pnpm audit --audit-level=low
 pnpm release:sync
 ```
 
-Record source revision, variant, device/API, model, commands, passes/failures/skips and scope for every new run. Full axe scans in the website baseline were limited to Chromium desktop/mobile; Firefox/WebKit had smoke coverage. Later source changes need fresh verification.
+Record source revision, test variant, device/API, model, commands, pass/fail/skip counts and measurement scope. Android coverage reproduction requires the temporary init-script configuration or an equivalent committed setup.

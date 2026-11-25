@@ -1,6 +1,18 @@
 # Product requirements and acceptance criteria
 
-Retenqo addresses fragmented digital context and forgotten commitments through a local-first Android memory assistant. The following requirements are derived from the current product design; they are not a verbatim competition challenge statement.
+## Self-defined Open Innovation problem
+
+Everyday digital context is fragmented across notifications, messages, images and documents. People lose time reconstructing important information, miss commitments buried in conversations and struggle to follow through. Existing search and task tools often require manual organization, while cloud-based AI may expose sensitive personal context or require connectivity.
+
+**Open Innovation challenge:** Build a privacy-first, mobile personal-intelligence system that turns user-authorized context into structured, retrievable memories and reviewable commitments; supports evidence-linked recall and timely follow-through; and uses resource-aware on-device processing while preserving user consent and decision authority.
+
+## Intended outcomes
+
+Help users recover important context, recognize commitments, review source evidence and manage follow-through with less manual organization. These are intended product outcomes, not measured user-impact statistics.
+
+## Acceptance criteria
+
+The following requirements translate the project's challenge into testable engineering behavior.
 
 | ID | Product requirement | Acceptance criterion and evidence |
 | --- | --- | --- |

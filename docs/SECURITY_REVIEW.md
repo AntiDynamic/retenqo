@@ -21,6 +21,10 @@ Retenqo protects personal context through explicit capture consent, local AI inf
 
 SQLCipher retains the passphrase array for opening additional pooled WAL connections. Retenqo now retains the required array for the database lifetime and clears it on close, while clearing the transient decrypted key after initialization. The concurrent-connection regression, six instrumentation passes and successful signed production upgrade on API 36 are recorded in [Testing](TESTING.md). Database encryption was preserved.
 
+## Dependency verification
+
+The recorded 25 November website audit (`pnpm audit --audit-level=low`) reported no known vulnerabilities in the website package graph. Android Gradle and native dependency vulnerability audits are separate verification activities. See [Testing](TESTING.md) for scope.
+
 ## Scope
 
 Application encryption applies to Room records and new encrypted backup exports; queue preferences are app-private but not application-encrypted. Queue filtering tests do not establish race-free revocation during inference. The [threat model](THREAT_MODEL.md) defines trust boundaries and the [roadmap](ROADMAP.md) tracks further hardening. Test references identify executable coverage; recorded run totals and device scope are maintained in [Testing](TESTING.md).
