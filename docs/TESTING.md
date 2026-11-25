@@ -24,7 +24,7 @@ The two browser retry cases were dark-theme accessibility checks on the privacy 
 
 ## Measured coverage
 
-Coverage is recorded separately for the configured website library scope and Android JVM-instrumented debug classes. These are not comparable whole-product coverage metrics.
+The website library coverage summary below is separate from the Android JVM-only measurement record; neither represents whole-product coverage.
 
 | Website V8 metric | Covered / total | Coverage |
 | --- | --- | --- |
@@ -35,15 +35,7 @@ Coverage is recorded separately for the configured website library scope and And
 
 Website measurement: Vitest 5.1.1 with V8; configured scope `src/lib/**/*.ts`. It does not represent all website pages or Android source.
 
-| Android JaCoCo metric | Covered / total | Coverage |
-| --- | --- | --- |
-| Instructions | 6,405 / 61,958 | 10.34% |
-| Lines | 830 / 7,138 | 11.63% |
-| Methods | 210 / 1,219 | 17.23% |
-| Branches | 540 / 4,076 | 13.25% |
-| Classes | 47 / 231 | 20.35% |
-
-Android measurement: JaCoCo 0.8.13, debug classes with `testDebugUnitTest` execution data, using a temporary Gradle init script. It does not include device instrumentation or native C/C++ coverage. The coverage setup is not yet committed; report values are the supplied measurement rather than a reproducible checked-in coverage gate.
+Android JVM-only coverage was measured with JaCoCo 0.8.13 using a temporary Gradle init script. The [detailed Android measurement record](https://github.com/priyanshuchawda/retenqo/blob/51ee2b1ea009ad1fe44d670f3181c4bde0824fce/docs/TESTING.md#measured-coverage) retains the original counts and percentages. This measurement excludes device instrumentation and native C/C++ code; the coverage configuration is not committed.
 
 ## Source provenance
 
